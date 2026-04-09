@@ -1241,24 +1241,31 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 
 		if (window.RS_MODULES.checkMinimal!==undefined) { window.RS_MODULES.checkMinimal();};
 	</script>
-
 	<script id="maximus-static-stabilizer">
             document.addEventListener("DOMContentLoaded", function() {
                 
-                // Expresión regular mejorada para cazar variaciones del dominio local de WordPress
+                // 1. CAZADORES DE DOMINIOS ERRÓNEOS
+                // Buscamos el dominio local Y el error de Github que pusiste en Simply Static
                 const localDomain = /https?:\/\/(infiniti-store\.local|infiniti\.local)\/?/gi;
+                const brokenGitDomain = /https?:\/\/(https?:\/\/)?github\.com\/ApoloSolInvictus\/store1\.git\/?/gi;
                 const liveDomain = 'https://apolosolinvictus.github.io/store1/';
 
-                // 1. REPARACIÓN PROFUNDA DE RUTAS (CSS, JS, Imágenes)
+                // 2. REPARACIÓN PROFUNDA DE RUTAS (CSS, JS, Imágenes)
                 document.querySelectorAll('link[href], script[src], img[src], source[srcset]').forEach(el => {
-                    if (el.href) el.href = el.href.replace(localDomain, liveDomain);
-                    if (el.src) el.src = el.src.replace(localDomain, liveDomain);
-                    if (el.srcset) el.srcset = el.srcset.replace(localDomain, liveDomain);
+                    if (el.href) {
+                        el.href = el.href.replace(localDomain, liveDomain).replace(brokenGitDomain, liveDomain);
+                    }
+                    if (el.src) {
+                        el.src = el.src.replace(localDomain, liveDomain).replace(brokenGitDomain, liveDomain);
+                    }
+                    if (el.srcset) {
+                        el.srcset = el.srcset.replace(localDomain, liveDomain).replace(brokenGitDomain, liveDomain);
+                    }
                 });
 
-                // 2. CAMBIO AUTOMÁTICO DE MENÚS Y ENLACES
+                // 3. CAMBIO AUTOMÁTICO DE MENÚS Y ENLACES
                 document.querySelectorAll('a[href]').forEach(link => {
-                    link.href = link.href.replace(localDomain, liveDomain);
+                    link.href = link.href.replace(localDomain, liveDomain).replace(brokenGitDomain, liveDomain);
                     const linkText = link.innerText.toLowerCase().trim();
                     
                     if (linkText === 'service' || linkText === 'services' || linkText === 'servicios') {
@@ -1269,7 +1276,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
                     }
                 });
 
-                // 3. DESCONGELAR REVOLUTION SLIDER
+                // 4. DESCONGELAR REVOLUTION SLIDER
                 setTimeout(() => {
                     document.querySelectorAll('rs-module-wrap, rs-module, rs-sbg-wrap, rs-sbg').forEach(wrap => {
                         wrap.style.height = 'auto'; 
@@ -1289,7 +1296,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
                     }
                 }, 800);
 
-                // 4. REACTIVAR ELEMENTOR FRONTEND
+                // 5. REACTIVAR ELEMENTOR FRONTEND
                 setTimeout(() => {
                     if (typeof elementorFrontend !== 'undefined') {
                         elementorFrontend.init();
