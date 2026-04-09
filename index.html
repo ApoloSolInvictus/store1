@@ -1241,5 +1241,64 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 		if (window.RS_MODULES.checkMinimal!==undefined) { window.RS_MODULES.checkMinimal();};
 	</script>
 
+	<script id="maximus-static-stabilizer">
+            document.addEventListener("DOMContentLoaded", function() {
+                
+                // Expresión regular para cazar el dominio local de WordPress
+                const localDomain = /https?:\/\/infiniti-store\.local\/?/g;
+                const liveDomain = 'https://apolosolinvictus.github.io/store/';
+
+                // 1. REPARACIÓN PROFUNDA DE RUTAS (CSS, JS, Imágenes)
+                document.querySelectorAll('link[href], script[src], img[src], source[srcset]').forEach(el => {
+                    if (el.href) el.href = el.href.replace(localDomain, liveDomain);
+                    if (el.src) el.src = el.src.replace(localDomain, liveDomain);
+                    if (el.srcset) el.srcset = el.srcset.replace(localDomain, liveDomain);
+                });
+
+                // 2. CAMBIO AUTOMÁTICO DE MENÚS Y ENLACES
+                document.querySelectorAll('a[href]').forEach(link => {
+                    link.href = link.href.replace(localDomain, liveDomain);
+                    const linkText = link.innerText.toLowerCase().trim();
+                    
+                    if (linkText === 'service' || linkText === 'services' || linkText === 'servicios') {
+                        link.setAttribute('href', liveDomain + 'service');
+                    }
+                    if (linkText === 'contact' || linkText === 'contacto' || linkText === 'contact us') {
+                        link.setAttribute('href', liveDomain + 'contact');
+                    }
+                });
+
+                // 3. DESCONGELAR REVOLUTION SLIDER
+                setTimeout(() => {
+                    document.querySelectorAll('rs-module-wrap, rs-module, rs-sbg-wrap, rs-sbg').forEach(wrap => {
+                        wrap.style.height = 'auto'; 
+                        wrap.style.display = 'block';
+                        wrap.style.opacity = '1';
+                        wrap.style.visibility = 'visible';
+                    });
+                    
+                    // Forzar recálculo de ventana
+                    window.dispatchEvent(new Event('resize'));
+
+                    // Reiniciar APIs de RevSlider si existen
+                    for (let key in window) {
+                        if (key.startsWith('revapi') && window[key] && window[key].revredraw) {
+                            window[key].revredraw();
+                        }
+                    }
+                }, 800);
+
+                // 4. REACTIVAR ELEMENTOR FRONTEND
+                setTimeout(() => {
+                    if (typeof elementorFrontend !== 'undefined') {
+                        elementorFrontend.init();
+                        window.dispatchEvent(new Event('resize'));
+                    }
+                    // Quitar la clase que oculta la página en cargas estáticas
+                    document.body.classList.remove('elementor-page-hidden');
+                }, 1200);
+            });
+        </script>
+	
 </body>
 </html>
