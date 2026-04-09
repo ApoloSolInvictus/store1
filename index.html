@@ -1245,9 +1245,9 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 	<script id="maximus-static-stabilizer">
             document.addEventListener("DOMContentLoaded", function() {
                 
-                // Expresión regular para cazar el dominio local de WordPress
-                const localDomain = /https?:\/\/infiniti-store\.local\/?/g;
-                const liveDomain = 'https://apolosolinvictus.github.io/store/';
+                // Expresión regular mejorada para cazar variaciones del dominio local de WordPress
+                const localDomain = /https?:\/\/(infiniti-store\.local|infiniti\.local)\/?/gi;
+                const liveDomain = 'https://apolosolinvictus.github.io/store1/';
 
                 // 1. REPARACIÓN PROFUNDA DE RUTAS (CSS, JS, Imágenes)
                 document.querySelectorAll('link[href], script[src], img[src], source[srcset]').forEach(el => {
@@ -1301,5 +1301,5 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             });
         </script>
 	
-</body>
+	</body>
 </html>
